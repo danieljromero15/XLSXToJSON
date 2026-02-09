@@ -4,15 +4,23 @@ import json
 
 if __name__ == '__main__':
     sheet_number = 0
-    if len(sys.argv) not in [2, 3]:
-        print("Usage: python XLSXToJSON.py <XLSXFile.xlsx> [sheet_number = 0]")
+    indent = 2
+    if len(sys.argv) not in [2, 3, 4]:
+        print("Usage: python XLSXToJSON.py <XLSXFile.xlsx> [sheet_number = 0] [indent = 2]")
         exit(1)
 
-    if len(sys.argv) == 3:
+    if len(sys.argv) >= 3:
         try:
             sheet_number = int(sys.argv[2])
         except ValueError:
             print("Invalid sheet number")
+            exit(1)
+
+    if len(sys.argv) >= 4:
+        try:
+            indent = int(sys.argv[3])
+        except ValueError:
+            print("Invalid indent")
             exit(1)
 
     wb = openpyxl.load_workbook(sys.argv[1])
@@ -37,6 +45,6 @@ if __name__ == '__main__':
 
     # print(json_list)
     with open('output.json', 'w') as json_file:
-        json.dump(json_list, json_file, indent=4)
+        json.dump(json_list, json_file, indent=indent)
 
     print("output.json created")
